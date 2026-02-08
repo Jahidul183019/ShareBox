@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+  <defs>
+    <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="200" fill="url(#grad4)"/>
+  <text x="200" y="95" font-family="Arial" font-size="28" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">DSA in C++</text>
+  <text x="200" y="130" font-family="Arial" font-size="16" fill="#e0e0e0" text-anchor="middle" dominant-baseline="middle">Data Structures & Algorithms</text>
+  <text x="200" y="155" font-family="Arial" font-size="14" fill="#d0d0d0" text-anchor="middle" dominant-baseline="middle">LeetCode Problem Solving</text>
+</svg>
