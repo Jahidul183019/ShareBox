@@ -1,0 +1,30 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7C7AE8"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <clipPath id="clip">
+      <rect x="0" y="0" width="512" height="512" rx="112"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#clip)">
+    <rect x="0" y="0" width="512" height="512" fill="url(#bg)"/>
+    <circle cx="420" cy="60" r="140" fill="#FFFFFF" opacity="0.08"/>
+    <circle cx="80" cy="460" r="180" fill="#000000" opacity="0.10"/>
+  </g>
+
+  <g transform="translate(256, 256)">
+    <polygon points="-130,-24 0,-86 130,-24 0,38" fill="#FFFFFF" opacity="0.95"/>
+    <polygon points="-130,-24 -130,114 0,176 0,38" fill="#E8EBFF"/>
+    <polygon points="130,-24 130,114 0,176 0,38" fill="#C7CBF7"/>
+
+    <rect x="-10" y="-86" width="20" height="262" fill="#FFFFFF" opacity="0.92"/>
+    <rect x="-130" y="-34" width="260" height="20" fill="#FFFFFF" opacity="0.92"/>
+
+    <path d="M -36 -86 Q -52 -122 -28 -136 Q -4 -126 0 -94" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+    <path d="M 36 -86 Q 52 -122 28 -136 Q 4 -126 0 -94" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="0" cy="-86" r="10" fill="#FFFFFF"/>
+  </g>
+</svg>

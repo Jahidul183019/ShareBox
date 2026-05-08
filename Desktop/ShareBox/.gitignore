@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+venv/
+backend/.venv/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# App runtime data
+backend/uploads/
+
+# Logs
+*.log
+
+# Build caches
+frontend/dist/
