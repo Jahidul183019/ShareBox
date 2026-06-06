@@ -1,0 +1,29 @@
+{
+  "last_scraped": "2026-06-03T12:40:08.154189",
+  "sources": {
+    "hypertension": {
+      "scraped_at": "2026-06-03T12:40:08.315560",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/hypertension",
+      "en_chars": 5725,
+      "status": "success"
+    },
+    "diabetes": {
+      "scraped_at": "2026-06-03T12:40:10.477041",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/diabetes",
+      "en_chars": 6317,
+      "status": "success"
+    },
+    "malnutrition": {
+      "scraped_at": "2026-06-03T12:40:12.872610",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/malnutrition",
+      "en_chars": 7156,
+      "status": "success"
+    },
+    "cvd": {
+      "scraped_at": "2026-06-03T12:40:15.430448",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/cardiovascular-diseases-(cvds)",
+      "en_chars": 6296,
+      "status": "success"
+    }
+  }
+}

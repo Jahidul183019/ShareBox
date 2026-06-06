@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/overpass/:path*",
+      "destination": "https://overpass-api.de/api/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://health-risk-radar.onrender.com/:path*"
+    }
+  ]
+}

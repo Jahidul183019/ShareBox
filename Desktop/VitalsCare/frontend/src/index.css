@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #f8f9ff;
+  --on-background: #0b1c30;
+  
+  --surface: #f8f9ff;
+  --on-surface: #0b1c30;
+  --surface-dim: #cbdbf5;
+  --surface-bright: #f8f9ff;
+  --surface-variant: #d3e4fe;
+  --on-surface-variant: #3c4947;
+  
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #eff4ff;
+  --surface-container: #e5eeff;
+  --surface-container-high: #dce9ff;
+  --surface-container-highest: #d3e4fe;
+  
+  --primary: #006b5f;
+  --on-primary: #ffffff;
+  --primary-container: #14b8a6;
+  --on-primary-container: #00423b;
+  
+  --secondary: #006a63;
+  --on-secondary: #ffffff;
+  --secondary-container: #99efe5;
+  --on-secondary-container: #006f67;
+  
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+  
+  --outline: #6c7a77;
+  --outline-variant: #bbcac6;
+  
+  --inverse-surface: #213145;
+  --inverse-on-surface: #eaf1ff;
+  --inverse-primary: #4fdbc8;
+}
+
+.dark {
+  --background: #0b121f;
+  --on-background: #e2e8f0;
+  
+  --surface: #0f172a;
+  --on-surface: #f1f5f9;
+  --surface-dim: #1e293b;
+  --surface-bright: #1e293b;
+  --surface-variant: #334155;
+  --on-surface-variant: #94a3b8;
+  
+  --surface-container-lowest: #090e18;
+  --surface-container-low: #0f172a;
+  --surface-container: #1e293b;
+  --surface-container-high: #334155;
+  --surface-container-highest: #475569;
+  
+  --primary: #019c8a;
+  --on-primary: #ffffff;
+  --primary-container: #14b8a6;
+  --on-primary-container: #00423b;
+  
+  --secondary: #14b8a6;
+  --on-secondary: #ffffff;
+  --secondary-container: #0f766e;
+  --on-secondary-container: #ccfbf1;
+  
+  --error: #ef4444;
+  --on-error: #ffffff;
+  --error-container: #ba1a1a;
+  --on-error-container: #ffdad6;
+  
+  --outline: #94a3b8;
+  --outline-variant: #475569;
+  
+  --inverse-surface: #f8f9ff;
+  --inverse-on-surface: #0b1c30;
+  --inverse-primary: #006b5f;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--on-background);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --variant-dark: .dark &;
+
+  --color-background: var(--background);
+  --color-on-background: var(--on-background);
+  
+  --color-surface: var(--surface);
+  --color-on-surface: var(--on-surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-variant: var(--surface-variant);
+  --color-on-surface-variant: var(--on-surface-variant);
+  
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  
+  --color-secondary: var(--secondary);
+  --color-on-secondary: var(--on-secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+  
+  --color-error: var(--error);
+  --color-on-error: var(--on-error);
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
+  
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  
+  --color-inverse-surface: var(--inverse-surface);
+  --color-inverse-on-surface: var(--inverse-on-surface);
+  --color-inverse-primary: var(--inverse-primary);
+}
+
+@layer utilities {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(229, 231, 235, 0.6);
+  }
+  .dark .glass-card {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(51, 65, 85, 0.5);
+  }
+}

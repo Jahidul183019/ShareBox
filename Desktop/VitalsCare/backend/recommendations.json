@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "purpose": "Localized actionable advice for Community Health Risk Radar",
+    "query_keys": ["primary_condition", "risk_level"],
+    "use_case": "Rural Bangladesh community health worker guidance",
+    "guideline_basis": ["WHO general preventive guidance", "Bangladesh DGHS community health messaging"]
+  },
+  "Hypertension": {
+    "Low": {
+      "advice": [
+        "Reduce salt now by avoiding added table salt, packaged chips, instant noodles, and very salty pickles.",
+        "Walk briskly for at least 30 minutes on most days of the week if there is no medical restriction.",
+        "Recheck blood pressure at the next community clinic visit or within 1-3 months."
+      ],
+      "community_worker_note": "Explain that early control can prevent stroke, kidney disease, and heart problems.",
+      "when_to_refer": "Refer sooner if the patient has headache, chest pain, weakness, shortness of breath, or swelling."
+    },
+    "Medium": {
+      "advice": [
+        "Cut salt immediately: cook with less salt, avoid adding extra salt at the table, and limit salty snacks and preserved foods.",
+        "Encourage daily walking or light physical work for a total of about 150 minutes per week if the person is safe to exercise.",
+        "Arrange a repeat blood pressure check within 1-2 weeks at a clinic or through a trained health worker."
+      ],
+      "community_worker_note": "Tell the patient that repeated readings above the normal range need follow-up even if they feel well.",
+      "when_to_refer": "Refer to a health facility if the reading stays high after rest or if symptoms of stroke or heart trouble appear."
+    },
+    "High": {
+      "advice": [
+        "Arrange urgent clinic review the same day or within 24 hours if possible, especially if the blood pressure remains very high after rest.",
+        "Advise strict salt reduction right away and avoidance of energy drinks, tobacco, and heavy exertion until reviewed by a clinician.",
+        "Teach danger signs: severe headache, blurred vision, chest pain, one-sided weakness, or trouble speaking need emergency referral."
+      ],
+      "community_worker_note": "Do not delay referral if the patient has very high readings or any danger sign.",
+      "when_to_refer": "Immediate referral to a higher-level facility or emergency care if danger signs are present."
+    }
+  },
+  "Diabetes": {
+    "Low": {
+      "advice": [
+        "Reduce sugary drinks and sweets, and choose water, unsweetened tea, or plain milk instead.",
+        "Keep meal portions steady and include vegetables, lentils, fish, eggs, and other protein foods where available.",
+        "Repeat diabetes screening at routine community follow-up if risk factors increase."
+      ],
+      "community_worker_note": "Explain early warning signs such as frequent urination, increased thirst, fatigue, and unexplained weight loss.",
+      "when_to_refer": "Refer for glucose testing if symptoms appear or if there is a strong family history."
+    },
+    "Medium": {
+      "advice": [
+        "Ask the patient to stop sugary drinks, reduce white rice portion size, and use more vegetables, lentils, and protein at meals.",
+        "Encourage a 20-30 minute walk after meals on most days if safe and culturally acceptable.",
+        "Arrange a fasting blood glucose or HbA1c test at the nearest clinic within 1-2 weeks."
+      ],
+      "community_worker_note": "Tell the patient that diabetes can begin quietly, so screening is important even without obvious symptoms.",
+      "when_to_refer": "Refer sooner if there is weight loss, blurred vision, slow-healing wounds, or repeated infections."
+    },
+    "High": {
+      "advice": [
+        "Refer for prompt clinical assessment and glucose testing as soon as possible, ideally the same day.",
+        "Advise immediate reduction of sugar, sweet tea, and sugary snacks while waiting for clinical review.",
+        "Teach urgent warning signs: vomiting, drowsiness, deep or fast breathing, severe dehydration, or confusion require emergency referral."
+      ],
+      "community_worker_note": "Explain that high sugar can become dangerous quickly and needs formal treatment planning.",
+      "when_to_refer": "Immediate referral to a health facility or emergency care if severe symptoms are present."
+    }
+  },
+  "Malnutrition": {
+    "Low": {
+      "advice": [
+        "Improve meal diversity by adding eggs, fish, dal, milk, leafy vegetables, and seasonal fruit when available.",
+        "Encourage regular meals and snacks instead of long gaps between eating.",
+        "Monitor weight and appetite at the next community follow-up visit."
+      ],
+      "community_worker_note": "For children, pregnant women, and older adults, remind families that early nutrition support prevents further decline.",
+      "when_to_refer": "Refer if the person keeps losing weight, has poor appetite, or has swelling."
+    },
+    "Medium": {
+      "advice": [
+        "Increase energy and protein intake with extra rice or bread plus dal, fish, egg, or milk at each main meal.",
+        "For pregnant or breastfeeding women, encourage one extra meal or healthy snack each day and early antenatal follow-up.",
+        "Check weight, appetite, and illness history again within 1-2 weeks."
+      ],
+      "community_worker_note": "Explain that repeated fever, diarrhea, or poor food access can worsen malnutrition quickly.",
+      "when_to_refer": "Refer if the person is not improving, has very low body weight, or has signs of infection."
+    },
+    "High": {
+      "advice": [
+        "Refer urgently for nutritional assessment and medical review, especially for children, pregnant women, older adults, or anyone with visible wasting.",
+        "Advise immediate small frequent meals, oral rehydration if diarrhea is present, and family support for food access.",
+        "Check for danger signs such as severe weakness, dehydration, swelling, fever, or inability to eat."
+      ],
+      "community_worker_note": "High-risk malnutrition needs quick referral because infections and dehydration can become life-threatening.",
+      "when_to_refer": "Immediate referral to a clinic or hospital if danger signs, severe weight loss, or inability to eat are present."
+    }
+  }
+}

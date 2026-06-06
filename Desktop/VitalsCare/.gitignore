@@ -1,0 +1,25 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual env
+venv/
+.venv/
+
+# Database
+*.sqlite3
+
+# Node
+node_modules/
+frontend/dist/
+
+# Mac
+.DS_Store
+
+# Backup files
+*.save
+
+# Environment Variables
+.env
+.env.local
+local.env
