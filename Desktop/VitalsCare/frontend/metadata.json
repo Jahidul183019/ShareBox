@@ -1,6 +1,0 @@
-{
-  "name": "VitalCare",
-  "description": "VitalCare is a proactive, AI-powered health risk radar that screens cardiovascular and diabetes indicators for early NCD detection.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
