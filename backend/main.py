@@ -12,15 +12,20 @@ Architecture:
 from __future__ import annotations
 
 import asyncio
+import logging
 import os
 import random
 import socket
 import string
+import urllib.error
+import urllib.request
 import uuid
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
+
+logger = logging.getLogger("sharebox")
 
 from fastapi import (
     FastAPI,
@@ -185,14 +190,65 @@ async def cleanup_rooms_loop() -> None:
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     task = asyncio.create_task(cleanup_rooms_loop())
+    keepalive_task = asyncio.create_task(keepalive_loop())
     try:
         yield
     finally:
         task.cancel()
+        keepalive_task.cancel()
+        for t in (task, keepalive_task):
+            try:
+                await t
+            except asyncio.CancelledError:
+                pass
+            except Exception:
+                pass
+
+
+# ---------------------------------------------------------------------------
+# Keep-alive
+# ---------------------------------------------------------------------------
+# Render's free tier spins down a web service after ~15 minutes of zero inbound
+# traffic. UptimeRobot alone is not enough to keep it warm, because the very
+# first ping after sleep takes 30+ seconds and UptimeRobot counts that as DOWN.
+#
+# The keep-alive task below self-pings our own /api/health every
+# KEEPALIVE_INTERVAL seconds so the service never idles out. It only runs in
+# hosted environments (where RENDER_EXTERNAL_URL is set); on a developer laptop
+# the ping is skipped entirely.
+KEEPALIVE_INTERVAL = 14 * 60  # 14 minutes, safely under Render's 15-minute idle
+KEEPALIVE_TIMEOUT = 10        # seconds for the self-ping request
+
+
+async def keepalive_loop() -> None:
+    """Periodically self-ping /api/health so Render free tier never sleeps."""
+    target = (os.getenv("RENDER_EXTERNAL_URL") or "").strip().rstrip("/")
+    if not target:
+        # Local dev — nothing to ping.
+        return
+
+    url = f"{target}/api/health"
+    # Small startup delay so we don't race the HTTP server coming online.
+    await asyncio.sleep(5)
+
+    while True:
         try:
-            await task
+            await asyncio.sleep(KEEPALIVE_INTERVAL)
+            await asyncio.to_thread(_ping_keepalive, url)
+            logger.info("keep-alive ping ok: %s", url)
         except asyncio.CancelledError:
-            pass
+            raise
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("keep-alive ping failed: %s", exc)
+            # Loop continues; the next tick will retry.
+
+
+def _ping_keepalive(url: str) -> None:
+    """Synchronous self-ping used by keepalive_loop (runs in a worker thread)."""
+    req = urllib.request.Request(url, headers={"User-Agent": "sharebox-keepalive/1.0"})
+    with urllib.request.urlopen(req, timeout=KEEPALIVE_TIMEOUT) as resp:
+        if resp.status >= 400:
+            raise RuntimeError(f"keep-alive got HTTP {resp.status}")
 
 
 # ---------------------------------------------------------------------------
@@ -657,6 +713,10 @@ else:
 
 if __name__ == "__main__":
     import uvicorn
+    logging.basicConfig(
+        level=os.getenv("LOG_LEVEL", "INFO"),
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    )
     uvicorn.run(
         "main:app",
         host=os.getenv("HOST", "0.0.0.0"),

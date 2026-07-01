@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: sharebox
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install --no-cache-dir -r requirements.txt
+    startCommand: python main.py
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # The keep-alive task in main.py reads this and self-pings every
+      # 14 minutes so Render's free tier never idles out. Render injects this
+      # automatically; the entry below is just an alias so it appears in the
+      # dashboard. If you fork this file, replace the value with your service URL.
+      - key: RENDER_EXTERNAL_URL
+        fromService:
+          type: web
+          name: sharebox
+          property: hostUrl

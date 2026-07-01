@@ -23,3 +23,9 @@ backend/uploads/
 
 # Build caches
 frontend/dist/
+
+# Editor / tool metadata
+.puku/
+.idea/
+.vscode/
+*.swp

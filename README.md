@@ -86,6 +86,25 @@ Notes:
 - Render provides `PORT`; the app reads it automatically.
 - Rooms are in-memory and uploads are local disk, so restarts/redeploys can clear active room state and files.
 
+#### Keeping the free tier warm + UptimeRobot
+
+Render's free plan spins a web service down after ~15 minutes of no traffic. On the first request after sleep the cold start takes 30+ seconds, which UptimeRobot (and most uptime checkers) treats as **DOWN**. The repo handles this two ways:
+
+1. **Self-ping keep-alive.** `backend/main.py` reads `RENDER_EXTERNAL_URL` and pings its own `/api/health` every 14 minutes, so the service never idles out. Render auto-injects that env var on every deploy — no manual setup needed. The task is a no-op when the env var is absent (local dev).
+2. **`/api/health` health endpoint.** A tiny JSON endpoint at `https://<your-service>.onrender.com/api/health` that returns `{"status":"ok", ...}`. Point UptimeRobot here, not at `/`.
+
+UptimeRobot recommended settings for this service:
+
+| Setting            | Value                                           |
+| ------------------ | ----------------------------------------------- |
+| Monitor Type       | HTTPS                                           |
+| URL                | `https://<your-service>.onrender.com/api/health` |
+| Monitoring Interval| 5 minutes                                       |
+| Timeout            | 60 seconds (cold starts can be slow)            |
+| Keyword            | leave blank — use status code monitoring        |
+
+If you're already created a UptimeRobot monitor pointing at `/`, edit it to use `/api/health` instead. The first ping after a deploy may still time out while the service is booting; once the keep-alive kicks in (~5 minutes after start) UptimeRobot should stay green indefinitely.
+
 ### Vercel (frontend-only, optional)
 
 Vercel works well for the React frontend, but this backend should stay on a host that supports long-lived WebSockets (Render/Railway/Fly/etc.).
