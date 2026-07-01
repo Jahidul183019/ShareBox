@@ -13,6 +13,9 @@ export default function Home({ onEnter }) {
     setError('');
     try {
       const res = await fetch(`${API_BASE}/api/rooms`, { method: 'POST' });
+      if (res.status === 429) {
+        throw new Error('Too many rooms created — wait a minute and try again');
+      }
       if (!res.ok) throw new Error('Could not create a room');
       const data = await res.json();
       onEnter(data.code);
