@@ -31,6 +31,8 @@ from fastapi import (
     FastAPI,
     File,
     HTTPException,
+    Request,
+    Response,
     UploadFile,
     WebSocket,
     WebSocketDisconnect,
@@ -667,8 +669,16 @@ async def websocket_endpoint(websocket: WebSocket, code: str, user_id: str):
 # ---------------------------------------------------------------------------
 # Health + SPA serving
 # ---------------------------------------------------------------------------
-@app.get("/api/health")
-async def health():
+@app.api_route("/api/health", methods=["GET", "HEAD"])
+async def health(request: Request):
+    """Liveness probe for Render and UptimeRobot.
+
+    Accepts both GET and HEAD because some monitors (UptimeRobot included)
+    issue HEAD requests, and FastAPI's @app.get decorator alone returns 405
+    for HEAD. Body is empty for HEAD; the JSON body is only sent for GET.
+    """
+    if request.method == "HEAD":
+        return Response(status_code=200)
     return {"status": "ok", "rooms": len(rooms)}
 
 
