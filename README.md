@@ -85,6 +85,7 @@ Notes:
 - No manual env vars are required for a basic deploy.
 - Render provides `PORT`; the app reads it automatically.
 - Rooms are in-memory and uploads are local disk, so restarts/redeploys can clear active room state and files.
+- **`SHARE_BASE_URL` (recommended):** The `/api/share-base` endpoint exists so the room page can build a copy-pasteable link for users on other devices. Without an override it returns the request host, which on Render is the load-balancer URL — fine for same-network links, but if you want the link to open from any device set `SHARE_BASE_URL=https://<your-service>.onrender.com` in **Environment → Environment Variables**. No rebuild needed; restart is enough.
 
 #### Keeping the free tier warm + UptimeRobot
 
@@ -158,6 +159,19 @@ The `Upgrade` / `Connection` headers are what lets WebSockets survive the proxy 
 
 ---
 
+## Running the tests
+
+```bash
+cd backend
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+python -m pytest
+```
+
+26 tests cover the `/api/health` endpoint contract (the regression that caused the original UptimeRobot outage), room creation + lookup, upload validation including path-traversal guards, and the in-memory `Room` class. The slowapi limiter state is reset between tests via a `conftest.py` fixture, so the 5/minute room-creation limit doesn't flake the suite.
+
+---
+
 ## Configuration knobs
 
 All defined at the top of `backend/main.py`:
@@ -218,7 +232,7 @@ sharebox/
 ## Things you'd want to add for a real production deploy
 
 1. **Persistent storage.** Everything is in memory today, so a backend restart wipes all rooms. Swap the `rooms` dict for SQLite + SQLAlchemy if you want rooms to survive deploys.
-2. **Rate limiting.** There's no throttle on message volume or upload frequency. Add `slowapi` if you expose this publicly.
+2. **Rate limiting beyond room creation.** `POST /api/rooms` is throttled to 5/minute per IP via `slowapi`. Message volume and upload frequency are still unthrottled — add a matching `@limiter.limit(...)` on those routes when you expose this publicly.
 3. **Authentication or link tokens.** Anyone with a code joins. That's the point for a 2-person use case — but for a real product you'd want signed join tokens.
 4. **Object storage for media.** Local disk works fine for one box; for multi-replica deployments put `/uploads/` on S3 or similar.
 5. **Observability.** No structured logging or metrics today. `structlog` + Prometheus would be a good minimum.

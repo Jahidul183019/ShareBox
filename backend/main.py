@@ -40,6 +40,10 @@ from fastapi import (
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.util import get_remote_address
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -258,6 +262,19 @@ def _ping_keepalive(url: str) -> None:
 # ---------------------------------------------------------------------------
 app = FastAPI(title="ShareBox", lifespan=lifespan)
 
+# ---------------------------------------------------------------------------
+# Rate limiting
+# ---------------------------------------------------------------------------
+# /api/rooms can be hammered by a single IP to fill memory with empty rooms
+# before the 24-hour cleanup loop evicts them. slowapi caps how often one IP
+# can hit the endpoint. We deliberately keep the limit generous (5/minute)
+# so legitimate use — e.g. a user creating a room and accidentally hitting
+# "Create" twice — is never blocked, but a flood from one source is.
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+
 # CORS is wide-open so you can run the React dev server against this backend.
 # In production the SPA is served from the same origin, so this is a no-op.
 app.add_middleware(
@@ -302,7 +319,8 @@ async def share_base():
 
 
 @app.post("/api/rooms")
-async def create_room():
+@limiter.limit("5/minute")
+async def create_room(request: Request):
     code = generate_room_code()
     rooms[code] = Room(code)
     return {"code": code}
