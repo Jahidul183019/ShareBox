@@ -45,6 +45,24 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
 
+
+def rate_limit_key(request: Request) -> str:
+    """Key the rate limiter on the real client IP, not on a proxy.
+
+    Render always sits behind a load balancer, so the raw socket address is
+    the balancer's IP for every request. When the SPA is hosted on a different
+    origin (Vercel, Netlify, another Render service, etc.), every user looks
+    like the same source. We trust X-Forwarded-For because Render / Vercel set
+    it for us; if it's missing we fall back to the socket address so local
+    dev still keys per-machine.
+    """
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        # X-Forwarded-For is a comma-separated chain; the leftmost entry is the
+        # original client. Strip whitespace just in case.
+        return forwarded.split(",")[0].strip()
+    return get_remote_address(request)
+
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
@@ -270,7 +288,12 @@ app = FastAPI(title="ShareBox", lifespan=lifespan)
 # can hit the endpoint. We deliberately keep the limit generous (5/minute)
 # so legitimate use — e.g. a user creating a room and accidentally hitting
 # "Create" twice — is never blocked, but a flood from one source is.
-limiter = Limiter(key_func=get_remote_address)
+#
+# The key function uses X-Forwarded-For when present, which is critical when
+# the frontend lives on a different origin (Vercel, Netlify, another Render
+# service) than this backend. Without that, every request looks like it came
+# from the same proxy IP and the 5/minute cap is shared across all users.
+limiter = Limiter(key_func=rate_limit_key)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
